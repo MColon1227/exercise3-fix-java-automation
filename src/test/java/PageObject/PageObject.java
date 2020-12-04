@@ -18,8 +18,8 @@ public class PageObject {
     By searchInputOption = By.cssSelector("input#twotabsearchtextbox");
     By searchButton = By.cssSelector("span#nav-search-submit-text > .nav-input");
 
-    By savedPrice = By.xpath("//div[5]/div[@class='sg-col-inner']//span[@class='a-price']");
-    By clickSavedPrice = By.cssSelector("div.s-result-list.s-main-slot > div:nth-child(5) img");
+    By savedPrice = By.xpath("//div[4]/div[@class='sg-col-inner']//span[@class='a-price']");
+    By clickSavedPrice = By.cssSelector("div.s-result-list.s-main-slot > div:nth-child(4) img");
     By detailPrice = By.cssSelector("span#price_inside_buybox");
     By addToCart = By.cssSelector("input#add-to-cart-button");
     By actualPrice = By.cssSelector("#hlb-subcart .a-color-price");
@@ -59,7 +59,7 @@ public class PageObject {
     public void savedPriceClick() {
         driver.findElement(clickSavedPrice).click();
     }
-    public String  detailPrice() {
+    public String detailPrice() {
         return driver.findElement(detailPrice).getText();
     }
     public void actualPriceResult() {

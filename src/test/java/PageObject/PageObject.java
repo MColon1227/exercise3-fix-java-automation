@@ -1,11 +1,16 @@
 package PageObject;
 
-import cucumber.api.DataTable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 public class PageObject {
+
+    // Class for the BrowserSetup
+    public PageObject(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
 
     WebDriver driver;
 
@@ -25,12 +30,9 @@ public class PageObject {
     By actualPrice = By.cssSelector("#hlb-subcart .a-color-price");
 
     By shopCart = By.cssSelector("span#nav-cart-count");
-    By clickFirstProduct = By.cssSelector(".s-main-slot.s-result-list.s-search-results.sg-row > div:nth-of-type(1) > .sg-col-inner");
+    By clickFirstProduct = By.cssSelector(".s-main-slot.s-result-list.s-search-results.sg-row > div:nth-of-type(2) > .sg-col-inner");
 
-    public PageObject(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
+
     public void identifyAccount() {
         driver.findElement(identify).click();
     }

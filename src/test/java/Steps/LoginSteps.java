@@ -3,42 +3,25 @@ package Steps;
 import Base.BaseUtil;
 import PageObject.PageObject;
 import cucumber.api.DataTable;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class LoginSteps extends BaseUtil {
 
-    private BaseUtil base;
     PageObject fillOut;
     PageObject searchProduct;
 
-    public LoginSteps(BaseUtil base) {
-        this.base = base;
+    public LoginSteps() {
+        getDriver();
+        beforeSuite();
     }
-    @Before
-    public void InitializeTest()
-    {
-        System.out.println("Opening the Browser");
-        //Passing a dummy web driver instance
-
-        base.StepInfo = "ChromeDriver";
-        System.setProperty("webdriver.chrome.driver", BaseUtil.CHROME_DRIVER_LOCATION);
-    }
-
-    WebDriver driver = new ChromeDriver();
 
     @Given("^I have to navigate to the Amazon Page$")
-    public void iHaveToNavigateToTheAmazonPage() throws Throwable
+    public void iHaveToNavigateToTheAmazonPage()
     {
         System.out.println("I have to navigate to the Amazon Page");
         driver.get(BaseUtil.BASE_URL);
@@ -49,7 +32,8 @@ public class LoginSteps extends BaseUtil {
     @And("^I enter username([^\"]*)")
     public void iEnterUsername(String username, DataTable table)
     {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        waitHandle();
+
         fillOut = new PageObject(driver);
         System.out.println("I enter the username");
         List<String> data = table.asList(String.class);
@@ -74,7 +58,7 @@ public class LoginSteps extends BaseUtil {
     }
 
     @Then("^I click the login button$")
-    public void iClickTheLoginButton() throws Throwable
+    public void iClickTheLoginButton()
     {
         System.out.println("I click the Login button");
         fillOut.pressSubmitButton();
@@ -91,19 +75,23 @@ public class LoginSteps extends BaseUtil {
 
     @And("^I Select first product and save the price And Click on the product$")
     public void iSelectFirstProductAndSaveThePriceAndClickOnTheProduct() {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        waitHandle();
+
         System.out.println("I Select first product and save the price and Click on the product and Validate first price vs detail price");
         String savedPrice = searchProduct.savedPrice();
         searchProduct.savedPriceClick();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        waitHandle();
+
         System.out.println("I Validate first price vs detail price");
         String detailPrice = searchProduct.detailPrice();
         searchProduct.actualPriceResult();
         Assert.assertEquals(savedPrice, detailPrice);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        waitHandle();
+
         System.out.println("I Click on Add to Cart");
         searchProduct.addToCart();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        waitHandle();
+
         System.out.println("I Validate again, first price vs current price");
         String savedActualPrice = searchProduct.actualPrice();
         Assert.assertEquals(detailPrice, savedActualPrice);
@@ -135,13 +123,8 @@ public class LoginSteps extends BaseUtil {
         System.out.println("I Verify that the cart number is now 2");
         String savedShopCart2 = searchProduct.shopCart();
         Assert.assertEquals(savedShopCart2 , "2");
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-    }
+        waitHandle();
 
-    @After
-    public void CleanUp()
-    {
-        System.out.println("Closing the Browser");
-        driver.close();
+        afterSuite();
     }
 }
